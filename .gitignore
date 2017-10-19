@@ -1,0 +1,4 @@
+output/*
+.*.fa
+.*.ps
+build/*

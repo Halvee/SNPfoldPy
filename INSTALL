@@ -1,0 +1,26 @@
+Installing SNPfoldPy for Unix and Linux operating systems:
+
+  * INSTALLATION INSTRUCTIONS
+  * PREREQUISITES FOR RUNNING SNPfoldPy
+
+
+INSTALLATION INSTRUCTIONS
+
+To install SNPfoldPy, simply decompress the SNPfoldPy source directory you've
+obtained (use 'tar -xvzf NAME_OF_COMPRESSED_DIR'), go into the directory, and 
+then type 'python setup.py install'.   This will install SNPfoldPy as a module 
+in your directory of python modules for whatever version of python you're 
+using, as well as SNPfold_commandline.py as a script that can be run from 
+anywhere.
+
+PREREQUISITES FOR RUNNING SNPfoldPy
+
+The following programs need to be installed in order for SNPfoldPy to run 
+properly:
+*Python (Version 2.7 is recommended to run SNPfold_commandline.py, 
+ as it uses certain modules such as argparse that are included in Python 2.7.. 
+ note that SNPfoldPy is NOT 
+ COMPATIBILE with Python 3.0).
+*Numpy
+*RNAfold (preferably version 2.0)
+

@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: SNPfoldPy
+Version: 1.0
+Summary: tool for quantifying the predicted level of global secondary structure change brought about by a SNP or SNPs in an RNA sequence.
+Home-page: /
+Author: Matt Halvorsen
+Author-email: mhalvors11@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN

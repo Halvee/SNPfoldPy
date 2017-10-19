@@ -1,0 +1,86 @@
+NAME
+  SNPfoldPy - calculate the amount of structure change in an RNA given 
+              specified SNPs
+SYNOPSIS
+  SNPfold_commandline.py [options] <sequence or seq file> <mutations or newline-delimited textile with mutations>
+DESCRIPTION
+  SNPfoldPy is a modified version of SNPfold that is meant to have a deeper 
+  feature set, play more nicely with recent versions of RNAfold, and in future
+  updates have better depiction of prediction RNA structure change in figures.
+  SNPfoldPy primarily works with data generated from the  partition function 
+  calculation feature carried out in RNAfold, which utilizes an algorithm 
+  based on the work of J.S. McCaskill to calculate a matrix of base-pairing 
+  probabilities for a given sequence of RNA. Given a sequence of RNA, the 
+  RNAfold program can under partition function mode return a postscript file 
+  that contains, among other things, a listing of all non-zero probabilities 
+  of base pairing for all nucleotides in the sequence.   SNPfoldPy constructs 
+  matrices of base-pairing probabilities from these output files for multiple 
+  sequence variants of and quantifies the structure change brought about by a 
+  given mutation or mutations, as well as the mutation's significance in terms 
+  of structure changing capability compared to all other possible mutations 
+  in the RNA.   SNPfoldPy can return several output files, including 
+  partition function derived base pairing probabilities per nucleotide, 
+  normalized shannon entropies per nucleotide and SNARNASM formatted output 
+  files.   When running SNPfoldPy, the sequence and mutations are required at 
+  bare minimum.   The user can either paste the sequence directly into the 
+  command line command to run the program, or list the name of a two-line fasta 
+  file containing the sequence of interest.  Mutations that the user wishes to 
+  analyze must be entered in colon-delimited format, in the format of 
+  wildtype_nucleotide(s)[position relative to 5' end]mutant_nucleotide(s) 
+  (ex: A31U:G33C:C18A etc).   If the user wishes to analyze sequence variants 
+  involving combinations of SNPs, they can list the SNPs for a given variant 
+  seperated by commas (ex: A31U,G33C:C18A,G17C etc).   The user may also 
+  substitute with larger mutations (ex: AG31UC), though keep in mind that 
+  p-value calculations will be disabled as a result, as our current 
+  calculations are incompatible with finding the significance of a 
+  mutation such as this type. SNPfoldPy is written for use on a Linux/Unix 
+  type of operating system, and requires installation of the Numpy module 
+  for Python.
+OPTIONS
+  -A, --accurate    Calculate p-values for SNPs indicated by user (if any input
+  mutations are not point mutations, this option will be cancelled).   The 
+  option will tell SNPfold to go ahead and calculate correlation coefficients 
+  for base-pairing probability and shannon entropy change for all possible 
+  single mutations in the RNA, and then find the rank of the mutation(s) 
+  in question.   This allows for an accurate assessment of a mutation's 
+  secondary structure-changing potential in comparison to all other single 
+  mutations in a given transcript.   Unfortunately, it can make the runtime 
+  go up substantially.   Take note that the calculation of accurate p-values 
+  go up on the order of N^3, where N represents the length of the RNA sequence
+  in question.   It is not advisable to try to calculate accurate p-values for 
+  a sequence greater than 2000 nucleotides in length.   Also take note that by
+  default, the input sequence, mutation correlation coefficients and accurate
+  p-values, as well as all correlation coefficients calculated for every 
+  possible single mutation will be saved in a directory in the output folder.
+  -m, --metric=[bpProbs,cc,shannon]    Control which items are returned to 
+  user.   Default setting is cc (reports correlation coefficient and shannon 
+  entropy per mutation).   Setting to bpProbs will return bpProbabilities per 
+  nucleotide per sequence variant (stored in output directory), while setting 
+  to shannon will do the same with shannon entropy (stored in output 
+  directory).
+  -s, --save    Save results to an output directory with a name that is either
+  random or, if -n is passed as an option, user-defined.   Is activated without
+  this arg if user uses [-m bpProbs], [-m shannon], [-m all], [-n dirname], 
+  or [-S].
+  -S, --SNARNASM    Output both bpProbs and shannon entropies in SNARNASM 
+  format (each row is a position in the sequence, and each column represents a
+  sequence variant)
+  -h, --help    Display the contents of the README in the SNPfold source 
+  folder.
+  -n, --nameDir= <dirName>    Allows user to assign a name to the output dir 
+  where output files will be placed.   Default setting is to assign a 
+  randomized directory name consisting of eight characters.
+
+REFERENCES
+  M. Halvorsen, J. S. Martin, S. Broadaway, A. Laederach (2010) Disease-Associated Mutations that Alter the RNA Structural Ensemble.   
+I.L.  Hofacker,  W.  Fontana,  P.F.  Stadler, S. Bonhoeffer, M. Tacker, P. Schuster (1994) Fast Folding and Comparison of RNA  Secondary  Structures.   Monatshefte  f. Chemie 125: 167-188
+  M.  Zuker, P. Stiegler (1981) Optimal computer folding of large RNA sequences using thermodynamic and auxiliary information, Nucl Acid Res 9: 133-148 
+  J.S. McCaskill (1990) The equilibrium partition  function  and  base  pair  binding probabilities for RNA secondary structures, Biopolymers 29: 1105-1119 
+  I.L. Hofacker & P.F. Stadler (2006) Memory Efficient Folding Algorithms for Circular RNA Secondary Structures, Bioinformatics (2006)
+  A.F. BompfA1/4newerer, R. Backofen, S.H. Bernhart, J. Hertel, I.L.  Hofacker,  P.F. Stadler,  S.  Will  (2007) "Variations on {RNA} Folding and Alignment: Lessons from Benasque" J. Math. Biol.
+VERSION
+This man page documents SNPfoldPy version 1.0.
+AUTHORS
+Matt Halvorsen, Chas Kissick, Kevin Curran, Sam Broadaway, Josh Martin, Alain Laederach
+BUGS
+None known (yet).

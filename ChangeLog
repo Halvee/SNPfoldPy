@@ -1,0 +1,24 @@
+V1.02 (10/18/2017)
+* Changed formal name of package to SNPfoldPy and put it up on github.
+  Changed all references of package in documentation to SNPfoldPy.
+* Fixed memory overlap issue by removing the full 2D matrix for each
+  mutant sequence by default, after folding predictions are completed.
+  The summed base pair probabilities are retained. An option 
+  '--keep-partit-matrices' has been added if user wishes to retain 
+  these matrices in memory.
+
+V1.01 (6/26/2013)
+* In 'detect indels' function from SequenceProcessing.py, changed regular 
+  expression search to search all subSNPs for a given mutant for positions 
+  in center (ie. 'A44G,G50C')
+* Made the same change to 'detect_strechPtMutations' function in 
+  SequenceProcessing.py
+* Added a 'mutantSeq' variable initialization in the 
+  __init__ for class SequenceObj in SequenceProcessing.py
+* In 'read_data_mutants' function, from SNPfold_commandline.py script, 
+  set up a while loop to remove empty lines from mutation input files
+* In 'SNPfold_commandline' function, from SNPfold_commandline.py script,
+  moved correlation coefficient output header down so that it gets 
+  printed at the same time as all of the results
+ 
+
