@@ -140,6 +140,7 @@ Everything will be deleted. Type "y" to overwrite, "n" to cancel.'
         rmtree(os.getcwd()+'/output/'+dirName)
         print '%s was emptied.'%(os.getcwd()+'/output/'+dirName)
         os.system('mkdir output/'+dirName)
+        sys.stderr.write('output dir : %s' %(os.getcwd()+'/output/'+dirName+"\n"))
     elif overwrite in ['n','N']:
         sys.exit('Operation aborted!\n')
     else:
@@ -225,8 +226,9 @@ def process_args(args):
             args.nameDir=generate_random_string(8)
         if os.path.isdir('output/'+args.nameDir)==True:
             direxists(args.nameDir)
-        else: os.system('mkdir output/'+args.nameDir)
-
+        else:
+            os.system('mkdir output/'+args.nameDir)
+            sys.stderr.write('output dir : %s' %(os.getcwd()+'/output/'+args.nameDir+"\n"))
 
     if args.additionalOpts!="":
         args.additionalOpts = "-"+args.additionalOpts
