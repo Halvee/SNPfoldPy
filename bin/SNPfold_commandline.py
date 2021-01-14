@@ -383,7 +383,7 @@ def SNPfold_commandline(argv):
     if args.accurate==False:
         if args.metric=='cc' or args.metric=="all":
             ''' default, returns only correlation coefficient btwn wildtype, each mut '''
-            print "\t".join(["MUT","CC_BPPROB","CC_SHANNON"])
+            res=["\t".join(["MUT","CC_BPPROB","CC_SHANNON"])]
 
             count = 1
 
@@ -391,11 +391,19 @@ def SNPfold_commandline(argv):
                 # collect cc btwn wt, each mut
                 sequenceData = allVariantsStructures[count].SequenceObj
                 if sequenceData.mutName!="WT" and args.accurate != True:
-                    print "\t".join([sequenceData.mutation,
-                                     str(allVariantsStructures[count].globalcc["bpProbs"]["WT"]),
-                                     str(allVariantsStructures[count].globalcc["shannon"]["WT"])])
+                    res.append("\t".join([sequenceData.mutation,
+                                          str(allVariantsStructures[count].globalcc["bpProbs"]["WT"]),
+                                          str(allVariantsStructures[count].globalcc["shannon"]["WT"])]))
                 count+=1
 
+            ''' if desired by user, write to file, otherwise print to stdout '''
+            if args.save==True:
+                mainpulate_outfile("output/"+args.nameDir+"/input_mutations_results.txt")
+                for str_i in res:
+                    mainpulate_outfile("output/"+args.nameDir+"/input_mutations_results.txt",
+                                       append2=str_i)
+            else:
+                for str_i in res: print(str_i)
 
 
     else:
