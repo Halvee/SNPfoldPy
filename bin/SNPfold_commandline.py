@@ -293,6 +293,9 @@ def SNPfold_commandline(argv):
         MutSNPsToParse = args.mutants.split(":")
         SNPsToParse = MutSNPsToParse
     else:
+        if args.mutants.find(",") != -1:
+            sys.exit("error : multi-nucleotide mutants not " + \
+                     "compatible with accurate p-value calculation.")
         MutSNPsToParse = args.mutants.split(":")
         SNPsToParse = wtSeqObj.allPossiblePointMuts()
 
