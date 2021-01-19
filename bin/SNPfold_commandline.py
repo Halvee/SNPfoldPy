@@ -35,6 +35,8 @@
 # * full help descriptions printed in scenario where positional arguments not
 #   fully provided
 # * slight expansion to option help descriptions
+# * fixed bug with output file name for accurate pval calculation turned off
+#   versus turned on
 # V1.02 (10/18/2017)
 # * Changed formal name of package to SNPfoldPy and put it up on github.
 #   Changed all references of package in documentation to SNPfoldPy.
