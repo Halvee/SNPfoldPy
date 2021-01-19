@@ -23,6 +23,18 @@
 #
 # UPDATE LOG
 #
+# V1.03 (01/19/2021)
+# * Output directory path now written to standard error.
+# * fixed bug where runs without accurate p-value turned on weren't having
+#   results saved to file even though option '-s' was being passed
+# * fixed bug where program would try and fail to run when trying to calculate
+#   accurate p-values for multi-nucleotide mutants. Accurate p-value algorithm
+#   described in original SNPfold paper is only valid for a single nucleotide
+#   variant within the input sequence, and not for insertions, deletions, or
+#   alterations of more than one nucleotide at a time.
+# * full help descriptions printed in scenario where positional arguments not
+#   fully provided
+# * slight expansion to option help descriptions
 # V1.02 (10/18/2017)
 # * Changed formal name of package to SNPfoldPy and put it up on github.
 #   Changed all references of package in documentation to SNPfoldPy.
@@ -256,15 +268,20 @@ def SNPfold_commandline(argv):
 
     opts = argparse.ArgumentParser()
     opts.add_argument("-A","--accurate",
-                      help="Calculate accurate p-values for mutations indicated by user.",
+                      help="Calculate accurate p-values for mutations " + \
+                           "indicated by user. Algorithm only works with " + \
+                           "single nucleotide mutants.",
                       action="store_true")
     opts.add_argument("-m","--metric",choices=['bpProbs','cc','shannon','all'],
                       default='cc',
-                      help="Specify metrics to be calculated for RNA foldings.")
+                      help="Specify metrics to be written to file, in the " + \
+                           "scenario that the '--save' option is turned on")
     opts.add_argument("-s","--save",action="store_true",
-                      help="output files are saved.")
+                      help="results are saved to file(s) rather than just " + \
+                           "being printed to standard output.")
     opts.add_argument("-n","--nameDir",
-                      help="Name the output directory.")
+                      help="Name of the directory where output files " + \
+                           "would be written to.")
     opts.add_argument("-t","--threads",
                       help="if calculating accurate p-values, number of processors to use for threading",
                       type=int,default=1)
@@ -279,8 +296,24 @@ def SNPfold_commandline(argv):
                       action="store_true")
     opts.add_argument("-N","--seqName",help="name of sequence",
                       default="SEQUENCE")
-    opts.add_argument("wild_type", help="Nucleotide sequence")
-    opts.add_argument("mutants", help="SNPs separated by colon, e.g. A5G:T18C")
+    opts.add_argument("wild_type", 
+                      help="Nucleotide sequence. Should only " + \
+                           "consist of the following nucleotides : " + \
+                           "A, C, G, U, T."
+                     )
+    opts.add_argument("mutants", 
+                      help="SNPs separated by colon, e.g. A5G:T18C . " + \
+                           "Multi-nucleotide mutants can be passed " + \
+                           "in a comma-seperated set of single nucleotide " + \
+                           "mutations (ex: C1G,G3U:A5G:T18C) " + \
+                           "but the accurate p-value algorithm cannot be " + \
+                           "used on these mutants since it is meant " + \
+                           "for single nucleotide mutants only.")
+    if len(argv) < 3: 
+        opts.print_help()
+        print("\nerror : too few arguments")
+        print("SNPfold_commandline.py [OPTS] <wild_type> <mutants>\n")
+        sys.exit(1)
     args = opts.parse_args()
     args = process_args(args)
 
