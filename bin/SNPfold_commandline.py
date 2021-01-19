@@ -487,19 +487,24 @@ def SNPfold_commandline(argv):
                 mainpulate_outfile("output/"+args.nameDir+"/input_mutations_allResults.txt"
                                 ,append2="\t".join(outputLine))
 
+    ''' determine output file names based on whether or not accurate pvals used '''
+    fprefix="input_mutations"
+    if args.accurate == True:
+        fprefix="all_pointmuts"
+
     if args.metric=='bpProbs' or args.metric=="all":
         ''' output bpProbs per sequence variant '''
         bpProbsTable=[Obj.bpProbs for Obj in allVariantsStructures]
         if args.save==True:
             i = 0
-            mainpulate_outfile("output/"+args.nameDir+"/input_mutations_bpProbs_perNt.txt")
+            mainpulate_outfile("output/"+args.nameDir+"/"+fprefix+"_bpProbs_perNt.txt")
             while i < len(AllFoldingsObj.AllFoldingsData):
                 bpProbs = AllFoldingsObj.AllFoldingsData[i].bpProbs
                 if args.save==True:
                     output = [AllFoldingsObj.AllFoldingsData[i].SequenceObj.mutName]
                     output.extend([str(val) for val in bpProbs])
                     output = "\t".join(output)
-                    mainpulate_outfile("output/"+args.nameDir+"/input_mutations_bpProbs_perNt.txt",
+                    mainpulate_outfile("output/"+args.nameDir+"/"+fprefix+"_bpProbs_perNt.txt",
                                         append2=output)
 
                 i+=1
@@ -510,14 +515,14 @@ def SNPfold_commandline(argv):
         shannonTable=[Obj.shannon for Obj in allVariantsStructures]
         if args.save==True:
             i = 0
-            mainpulate_outfile("output/"+args.nameDir+"/input_mutations_shannon_perNt.txt")
+            mainpulate_outfile("output/"+args.nameDir+"/"+fprefix+"_shannon_perNt.txt")
             while i < len(AllFoldingsObj.AllFoldingsData):
                 shannon = AllFoldingsObj.AllFoldingsData[i].shannon
                 if args.save==True:
                     output = [AllFoldingsObj.AllFoldingsData[i].SequenceObj.mutName]
                     output.extend([str(val) for val in shannon])
                     output = "\t".join(output)
-                    mainpulate_outfile("output/"+args.nameDir+"/input_mutations_shannon_perNt.txt",
+                    mainpulate_outfile("output/"+args.nameDir+"/"+fprefix+"_shannon_perNt.txt",
                                         append2=output)
                 i+=1
 
