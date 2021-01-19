@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 
 ###############################################################################
 # This file is part of SNPfoldPy.
@@ -24,6 +24,7 @@
 # UPDATE LOG
 #
 # V1.03 (01/19/2021)
+# * change script to executable, only runnable on python2.7.
 # * Output directory path now written to standard error.
 # * fixed bug where runs without accurate p-value turned on weren't having
 #   results saved to file even though option '-s' was being passed
@@ -59,6 +60,12 @@
 
 import os
 import sys
+
+''' halt if python3 being used. Only python version 2.7+ allowed '''
+if sys.version_info.major >= 3 or sys.version_info.minor < 7:
+    print("error : only version python 2.7+ allowed")
+    sys.exit(1)
+
 import re
 import math
 import numpy
@@ -146,19 +153,19 @@ def read_data_mutants(filename):
 
 def direxists(dirName):
     ''' gives user option to overwrite output directory if it already exists '''
-    print 'That directory already exists. Do you want to overwrite it?\n\
-Everything will be deleted. Type "y" to overwrite, "n" to cancel.'
+    print('That directory already exists. Do you want to overwrite it?\n\
+Everything will be deleted. Type "y" to overwrite, "n" to cancel.')
     overwrite = raw_input("> ")
 
     if overwrite in ['y','Y']:
         rmtree(os.getcwd()+'/output/'+dirName)
-        print '%s was emptied.'%(os.getcwd()+'/output/'+dirName)
+        print('%s was emptied.'%(os.getcwd()+'/output/'+dirName))
         os.system('mkdir output/'+dirName)
         sys.stderr.write('output dir : %s' %(os.getcwd()+'/output/'+dirName+"\n"))
     elif overwrite in ['n','N']:
         sys.exit('Operation aborted!\n')
     else:
-        print 'Invalid input.'
+        print('Invalid input.')
         direxists(dirName)
 
 def SequenceSanityCheck(seq):
@@ -167,7 +174,7 @@ def SequenceSanityCheck(seq):
     seqIndex = 0
     while(seqIndex<len(self.sequence)):
         if (sequence[seqIndex] not in self.ntsAllowed):
-            print "character ("+str(seq[seqIndex])+") not allowed in folding"
+            print("character ("+str(seq[seqIndex])+") not allowed in folding")
             sys.exit()
             return False
         seqIndex+=1
@@ -203,9 +210,9 @@ def check_for_errors(wild_type, SNPs):
 
 
     if len(bad_SNPs)>0:
-        print "ERROR WITH THE FOLLOWING SNPs : "
+        print("ERROR WITH THE FOLLOWING SNPs : ")
         for item in bad_SNPs:
-            print item
+            print(item)
         sys.exit(2)
 
     return
@@ -229,7 +236,7 @@ def process_args(args):
     if os.path.isdir('output')==False:
         os.system('mkdir output')
     if  detect_indels(args.mutants.split(":"))==True:
-        print "error : no insertion or deletion mutations"
+        print("error : no insertion or deletion mutations")
         sys.exit(1)
     if detect_strechPtMutations(args.mutants.split(":"))==True:
         args.accurate=False
@@ -471,7 +478,7 @@ def SNPfold_commandline(argv):
             PvalSets[subtype]=Pvals
             NonStandardMuts = x[2]
 
-        print "\t".join(["MUT","CC_BPPROB","CC_BPPROB_PVAL","CC_SHANNON","CC_SHANNON_PVAL"])
+        print("\t".join(["MUT","CC_BPPROB","CC_BPPROB_PVAL","CC_SHANNON","CC_SHANNON_PVAL"]))
         mainpulate_outfile("output/"+args.nameDir+"/input_mutations_allResults.txt",
                             append2="\t".join(["MUT","CC_BPPROB","CC_BPPROB_PVAL","CC_SHANNON","CC_SHANNON_PVAL"]))
 
@@ -483,7 +490,7 @@ def SNPfold_commandline(argv):
             for subtype in AllFoldingsObj.globalcc_matrix.keys():
                 outputLine.append(str(AllFoldingsObj.cchash[subtype][mut]))
                 outputLine.append(str(PvalSets[subtype][mut]))
-            print "\t".join(outputLine)
+            print("\t".join(outputLine))
 #506
             if args.save==True:
                 mainpulate_outfile("output/"+args.nameDir+"/input_mutations_allResults.txt"
